@@ -404,7 +404,29 @@ WHERE desconto > (valor * 0.2);
        -- Script para destruir tudo dentro do banco de dados --
 	
 -- drop database loja_roupa;
-create schema Loja_roupa;
+-- create schema Loja_roupa;
+DROP TABLE IF EXISTS produto_venda;
+DROP TABLE IF EXISTS vendas;
+DROP TABLE IF EXISTS promocao;
+DROP TABLE IF EXISTS funcionarios;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS estoque;
+DROP TABLE IF EXISTS produtos;
+DROP TABLE IF EXISTS fornecedores;
+DROP TABLE IF EXISTS categoria;
+
+DROP VIEW IF EXISTS vw_vendas_com_desconto_alto;
+DROP VIEW IF EXISTS vw_lucro_por_produto;
+DROP VIEW IF EXISTS vw_promocoes_ativas;
+DROP VIEW IF EXISTS vw_clientes_fiéis;
+DROP VIEW IF EXISTS vw_vendas_maiores_1000;
+DROP VIEW IF EXISTS vw_produtos_nunca_vendidos;
+DROP VIEW IF EXISTS vw_total_vendas_cliente;
+DROP VIEW IF EXISTS vw_vendas_clientes_funcionarios;
+DROP VIEW IF EXISTS vw_estoque_atual;
+DROP VIEW IF EXISTS vw_produtos_categorias;
+
+
 
 
 
