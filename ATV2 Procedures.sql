@@ -1,4 +1,5 @@
 -- 1
+DROP PROCEDURE IF EXISTS clientes_fieis;
 DELIMITER //
 CREATE PROCEDURE clientes_fieis(IN limite DECIMAL(10,2))
 BEGIN
@@ -8,13 +9,15 @@ BEGIN
   GROUP BY c.nome
   HAVING total_compras >= limite;
 END;
-DELIMITER //
+//
+DELIMITER ;
 
 CALL clientes_fieis(100);
 
--- 2. 
+-- 2
+DROP PROCEDURE IF EXISTS relatorio_vendas_cliente;
 DELIMITER //
-CREATE PROCEDURE relatorio_vendas_cliente ()
+CREATE PROCEDURE relatorio_vendas_cliente()
 BEGIN
   SELECT c.nome AS cliente, COUNT(v.id_venda) AS qtd_vendas,
          SUM(v.valor) AS total_gasto, AVG(v.valor) AS media_venda
@@ -23,12 +26,15 @@ BEGIN
   GROUP BY c.nome
   ORDER BY total_gasto DESC;
 END;
-DELIMITER //
+//
+DELIMITER ;
+
 CALL relatorio_vendas_cliente();
 
 -- 3
+DROP PROCEDURE IF EXISTS produtos_por_fornecedor;
 DELIMITER //
-CREATE PROCEDURE produtos_por_fornecedor ()
+CREATE PROCEDURE produtos_por_fornecedor()
 BEGIN
   SELECT f.nome AS fornecedor, p.nome AS produto, p.preco, c.nome AS categoria
   FROM fornecedores f
@@ -36,73 +42,53 @@ BEGIN
   JOIN categoria c ON p.cod_categoria = c.id_categoria
   ORDER BY f.nome, p.nome;
 END;
-DELIMITER //
+//
+DELIMITER ;
 
 CALL produtos_por_fornecedor();
 
 -- 4
+DROP PROCEDURE IF EXISTS produto_estoque;
 DELIMITER //
-CREATE PROCEDURE produto_estoque (
-    IN limite INT
-)
+CREATE PROCEDURE produto_estoque(IN limite INT)
 BEGIN
-    SELECT p.id_produto, p.nome, e.quantidade
-    FROM produtos p
-    JOIN estoque e ON p.id_produto = e.cod_produto
-    WHERE e.quantidade < limite;
-END 
+  SELECT p.id_produto, p.nome, e.quantidade
+  FROM produtos p
+  JOIN estoque e ON p.id_produto = e.cod_produto
+  WHERE e.quantidade < limite;
+END;
 //
+DELIMITER ;
 
-CALL produto_estoque(25);
+ CALL produto_estoque(100);
 
 -- 5
-DEMILITER //
-CREATE PROCEDURE minimo_vendas (
-    IN minimo_vendas INT
-)
+DROP PROCEDURE IF EXISTS minimo_vendas;
+DELIMITER //
+CREATE PROCEDURE minimo_vendas(IN minimo_vendas INT)
 BEGIN
-    SELECT f.id_funcionario, f.nome, COUNT(v.id_venda) AS total_vendas
-    FROM funcionarios f
-    JOIN vendas v ON f.id_funcionario = v.cod_vendedor
-    GROUP BY f.id_funcionario, f.nome
-    HAVING COUNT(v.id_venda) >= minimo_vendas;
+  SELECT f.id_funcionario, f.nome, COUNT(v.id_venda) AS total_vendas
+  FROM funcionarios f
+  JOIN vendas v ON f.id_funcionario = v.cod_vendedor
+  GROUP BY f.id_funcionario, f.nome
+  HAVING COUNT(v.id_venda) >= minimo_vendas;
 END;
 //
-CALL minimo_vendas(0);
+DELIMITER ;
 
+CALL minimo_vendas(1);
+
+-- 6
+DROP PROCEDURE IF EXISTS produtos_categoria;
 DELIMITER //
-CREATE PROCEDURE produtos_categoria (
-    IN nome_categoria VARCHAR(100)
-)
+CREATE PROCEDURE produtos_categoria(IN nome_categoria VARCHAR(100))
 BEGIN
-    SELECT p.id_produto, p.nome, p.detalhes, p.preco, p.tamanho, p.cor, p.marca
-    FROM produtos p
-    JOIN categoria c ON p.cod_categoria = c.id_categoria
-    WHERE c.nome = nome_categoria;
+  SELECT p.id_produto, p.nome, p.detalhes, p.preco, p.tamanho, p.cor, p.marca
+  FROM produtos p
+  JOIN categoria c ON p.cod_categoria = c.id_categoria
+  WHERE c.nome = nome_categoria;
 END;
- //
+//
 DELIMITER ;
 
 CALL produtos_categoria('Camisetas');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
