@@ -1,10 +1,3 @@
-use Loja_roupa;
-
-SELECT p.nome AS produto, c.nome AS categoria, f.nome AS fornecedor
-FROM produtos p
-JOIN categoria c ON p.cod_categoria = c.id_categoria
-JOIN fornecedores f ON p.cod_fornecedor = f.id_fornecedor
-;
 
 -- 1. 
 DELIMITER //
